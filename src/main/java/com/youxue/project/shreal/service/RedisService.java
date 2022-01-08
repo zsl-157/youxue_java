@@ -18,6 +18,10 @@ public class RedisService {
     public long getExpire(String key){
         return redisTemplate.getExpire(key);
     }
+    public String getValue(String key){
+        return redisTemplate.opsForValue().get(key);
+    }
+
     public void setKey(String key,String value){
         redisTemplate.opsForValue().set(key,value);
     }
