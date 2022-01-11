@@ -1,5 +1,6 @@
 package com.youxue.project.shreal.common.Shiro;
 
+import com.youxue.project.shreal.common.exception.BaseException;
 import com.youxue.project.shreal.service.RedisService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -30,7 +31,7 @@ public class CustomReam extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         String sessionInfo = redisDb.getValue(userToken+principalCollection.getPrimaryPrincipal());
         if(StringUtils.isEmpty(sessionInfo)){
-
+            throw new BaseException("");
         }
         return simpleAuthorizationInfo;
     }
