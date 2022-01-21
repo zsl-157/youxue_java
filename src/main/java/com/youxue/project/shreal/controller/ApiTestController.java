@@ -3,6 +3,7 @@ package com.youxue.project.shreal.controller;
 import com.youxue.project.shreal.service.RedisService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "redis测试")
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class ApiTestController {
     Logger logger = LoggerFactory.getLogger(ApiTestController.class);
     @Autowired
