@@ -32,9 +32,8 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
         }
         if(!StringUtils.isEmpty(userEntity.getPhoneNumber())){
             userEntity.setPhoneNumber(userEntity.getPhoneNumber());
-        }else {
-            userEntity.setUserName(userEntity.getUserName());
         }
+        userEntity.setUserName(userEntity.getUserName());
         userEntity.setPassword(userEntity.getPassword());
         String encryptPassword = PasswordUtils.md5Password(userEntity.getPassword());
         //userEntity.setPassword();
@@ -53,6 +52,30 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
 
     @Override
     public void login(User userEntity){
+        Result<User> result = new Result<>();
+        User user = sysUserMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUserName,userEntity.getUserName()));
+        if (user == null){
+            if(!StringUtils.isEmpty(userEntity.getPhoneNumber())){
+                userEntity.setPhoneNumber(userEntity.getPhoneNumber());
+            }
+            userEntity.setUserName(userEntity.getUserName());
+            userEntity.setPassword(userEntity.getPassword());
+            String encryptPassword = PasswordUtils.md5Password(userEntity.getPassword());
+            //userEntity.setPassword();
+            try{
+                sysUserMapper.insert(userEntity);
+            }catch (Exception e){
+                e.printStackTrace();
+                log.error("注册用户失败");
+                result.setCm(0,"注册失败");
+
+            }
+            result.setCmd(1,"注册成功,将自动跳转到首页",userEntity);
+        }
+        else{
+
+
+        }
 
     }
 }

@@ -1,7 +1,6 @@
 package com.youxue.project.shreal.common.utils;
 
 
-import sun.plugin2.message.Message;
 import sun.security.provider.MD5;
 
 import java.io.UnsupportedEncodingException;
