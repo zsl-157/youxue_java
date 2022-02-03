@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @Service
 public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
+
 
     @Override
     public Result<User> register(User userEntity) {
