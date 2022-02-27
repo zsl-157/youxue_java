@@ -9,6 +9,8 @@ import com.youxue.project.shreal.entity.User;
 public interface SysUserService extends IService<User> {
     Result register(User userEntity);
 
-    void login(User userEntity);
+    Result login(User userEntity);
+
+    User getOneUserByUserName(String userName);
 
 }

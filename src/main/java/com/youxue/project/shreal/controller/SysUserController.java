@@ -21,5 +21,16 @@ public class SysUserController {
         Result<User> result = sysUserService.register(userEntity);
         return result;
     }
+    @GetMapping("/login")//便于测试
+    //@PostMapping("/login")
+    public Result<User> login(@ModelAttribute User userEntity){
+        Result<User> result = sysUserService.login(userEntity);
+        return result;
+    }
+    @GetMapping("/user/{username}")
+    public Result getInfoByUsername(@PathVariable String username){
+        return new Result();
+    }
+
 
 }

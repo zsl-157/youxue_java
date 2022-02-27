@@ -4,21 +4,31 @@ import com.alibaba.fastjson.JSONObject;
 import com.youxue.project.shreal.common.exception.BaseException;
 import com.youxue.project.shreal.common.exception.code.BaseResponseCode;
 import com.youxue.project.shreal.common.utils.Constraints;
+import com.youxue.project.shreal.entity.User;
 import com.youxue.project.shreal.service.RedisService;
+import com.youxue.project.shreal.service.SysUserService;
+import com.youxue.project.shreal.service.serviceimpl.SysUserImpl;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.redis.util.ByteUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 
-public class CustomReam extends AuthorizingRealm {
 
+
+public class CustomReam extends AuthorizingRealm {
+    @Autowired
+    private SysUserImpl sysUser;
     @Value("${spring.redis.key.prefix.userToken}")
     private String userToken;
     @Lazy
@@ -51,6 +61,14 @@ public class CustomReam extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        return new SimpleAuthenticationInfo(authenticationToken.getPrincipal(),authenticationToken.getPrincipal(),getName());
+        String userName =(String) authenticationToken.getPrincipal();
+        User user = sysUser.getOneUserByUserName(userName);
+        if (!ObjectUtils.isEmpty(user)){
+            return new SimpleAuthenticationInfo(user.getUserName(),user.getEncryptedPassword(),ByteSource.Util.bytes(""),getName());
+        }
+        else {
+            return new SimpleAuthenticationInfo("","", ByteSource.Util.bytes(""),getName());
+        }
+
     }
 }

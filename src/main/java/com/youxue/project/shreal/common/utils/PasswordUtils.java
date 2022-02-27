@@ -1,6 +1,7 @@
 package com.youxue.project.shreal.common.utils;
 
 
+import org.apache.shiro.crypto.hash.Md5Hash;
 import sun.security.provider.MD5;
 
 import java.io.UnsupportedEncodingException;
@@ -15,17 +16,10 @@ import java.security.NoSuchAlgorithmException;
 
 public class PasswordUtils {
     public static String md5Password(String password){
-        byte[] md5PasswordByte = null;
-        try {
-            MessageDigest passwordDigest = MessageDigest.getInstance("md5");
-            md5PasswordByte = passwordDigest.digest(password.getBytes("utf-8"));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String encryptedPassword = new BigInteger(1,md5PasswordByte).toString(16);
-        return encryptedPassword;
+        Md5Hash md5Hash = new Md5Hash(password,"",1024);
+        String result = md5Hash.toHex();
+        return result;
+
     }
 
 
