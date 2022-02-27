@@ -40,11 +40,11 @@ public class CustomReam extends AuthorizingRealm {
         if (sessionInfoObj == null){
             throw new BaseException(BaseResponseCode.TOKEN_ERROR);
         }
-        if (sessionInfoObj.get(Constraints.ROLE_KEY) != null){
-            simpleAuthorizationInfo.addRoles((Collection<String>) sessionInfoObj.get(Constraints.ROLE_KEY));
+        if (sessionInfoObj.get(Constraints.ROLES_KEY) != null){
+            simpleAuthorizationInfo.addRoles((Collection<String>) sessionInfoObj.get(Constraints.ROLES_KEY));
         }
-        if (sessionInfoObj.get(Constraints.PERMISSION_KEY) != null){
-            simpleAuthorizationInfo.addStringPermissions((Collection<String>) sessionInfoObj.get(Constraints.PERMISSION_KEY));
+        if (sessionInfoObj.get(Constraints.PERMISSIONS_KEY) != null){
+            simpleAuthorizationInfo.addStringPermissions((Collection<String>) sessionInfoObj.get(Constraints.PERMISSIONS_KEY));
         }
         return simpleAuthorizationInfo;
     }

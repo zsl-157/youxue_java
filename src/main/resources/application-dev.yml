@@ -1,9 +1,10 @@
 spring:
   datasource:
       username: root
-      password: shitou19990225
+      password: 339682
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/youxue?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+      url: jdbc:mysql://192.168.17.136:3306/youxue?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+
   redis:
     host: 127.0.0.1
     port: 6379
@@ -20,3 +21,7 @@ spring:
   file:
     path: F:/files
     url: http://localhost:8080/files
+127:
+  0:
+    0:
+      1:

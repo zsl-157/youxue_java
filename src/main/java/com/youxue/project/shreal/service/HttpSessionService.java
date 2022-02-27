@@ -70,10 +70,5 @@ public class HttpSessionService {
     }
 
 
-    public static void main(String[] args) {
-        HttpSessionService httpSessionService = new HttpSessionService();
-        String s = httpSessionService.createRandomToken();
-        System.out.println(s);
 
-    }
 }

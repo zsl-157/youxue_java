@@ -39,6 +39,7 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
         userEntity.setPassword(userEntity.getPassword());
         String encryptPassword = PasswordUtils.md5Password(userEntity.getPassword());
         //userEntity.setPassword();
+        userEntity.setEncryptedPassword(encryptPassword);
         try{
             sysUserMapper.insert(userEntity);
         }catch (Exception e){
