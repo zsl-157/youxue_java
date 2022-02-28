@@ -1,11 +1,9 @@
 package com.youxue.project.shreal.entity;
 
 
-
-
 public class User {
 
-    private long userId;
+    private String userId;
     private String userName;
     private String encryptedPassword;
     private String password;
@@ -21,11 +19,11 @@ public class User {
     private String deleted;
 
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
