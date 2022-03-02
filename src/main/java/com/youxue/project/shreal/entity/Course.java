@@ -1,7 +1,7 @@
 package com.youxue.project.shreal.entity;
 
 
-public class Course {
+public class Course{
 
   private long courseId;
   private long userId;

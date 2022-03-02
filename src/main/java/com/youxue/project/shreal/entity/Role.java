@@ -1,6 +1,6 @@
 package com.youxue.project.shreal.entity;
 
-public class Role {
+public class Role{
 
   private String  rid;
   private String rname;

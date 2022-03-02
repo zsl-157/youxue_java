@@ -1,7 +1,7 @@
 package com.youxue.project.shreal.entity;
 
 
-public class User {
+public class User{
 
     private String userId;
     private String userName;

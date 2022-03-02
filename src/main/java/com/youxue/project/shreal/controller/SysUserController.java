@@ -27,10 +27,16 @@ public class SysUserController {
         Result<User> result = sysUserService.login(userEntity);
         return result;
     }
-    @GetMapping("/user/{username}")
+    //登录成功后请求接口获取用户信息
+    @GetMapping("/user/{id}")
     public Result getInfoByUsername(@PathVariable String username){
         return new Result();
     }
-
+    //获取用户列表
+    @GetMapping("/users")
+    public Result getAllUsers(@RequestParam int pageNum,@RequestParam int rows,@RequestParam int offset){
+        Result result = sysUserService.getAllUsers(pageNum,rows,offset);
+        return result;
+    }
 
 }

@@ -1,7 +1,7 @@
 package com.youxue.project.shreal.entity;
 
 
-public class UserAndRole {
+public class UserAndRole{
 
   private long id;
   private String uid;

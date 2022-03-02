@@ -1,6 +1,9 @@
 package com.youxue.project.shreal.service.serviceimpl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.youxue.project.shreal.common.utils.HttpUtils;
 import com.youxue.project.shreal.common.utils.PasswordUtils;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -86,6 +90,27 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
 
     }
 
+    //分页查询
+    @Override
+    public Result getAllUsers(int pageNum,int rows,int offset) {
+        Result result = new Result();
+        List<User> userList= null;
+        try{
+            Page<User> page = new Page<>(pageNum,rows);
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("deleted","0");
+            IPage<User> userIPage = sysUserMapper.selectPage(page,queryWrapper);
+            userList = userIPage.getRecords();
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setCm(0,"查询失败！");
+            return result;
+        }
+        result.setCmd(1,"成功！",userList);
+        return result;
+
+    }
+
     @Override
     public Result login(User userEntity){
         Result<Object> result = new Result<>();
@@ -105,7 +130,5 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
         }
         result.setCmd(1,"登录成功",HttpUtils.getRandomToken()+"#"+userEntity.getUserId());
         return result;
-
-
     }
 }
