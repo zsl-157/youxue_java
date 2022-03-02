@@ -6,6 +6,7 @@ import com.youxue.project.shreal.entity.*;
 import com.youxue.project.shreal.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface SysUserService extends IService<User> {
@@ -13,9 +14,9 @@ public interface SysUserService extends IService<User> {
 
     Result login(User userEntity);
 
-    User getOneUserByUserName(String userName);
+    Result getOneUserByUserName(String userName);
 
     Result getAllUsers(int pageNum,int rows,int offset);
 
-
+    Map<String,Object> getallTest();
 }

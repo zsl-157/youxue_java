@@ -28,9 +28,10 @@ public class SysUserController {
         return result;
     }
     //登录成功后请求接口获取用户信息
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/{username}")
     public Result getInfoByUsername(@PathVariable String username){
-        return new Result();
+        Result result = sysUserService.getOneUserByUserName(username);
+        return result;
     }
     //获取用户列表
     @GetMapping("/users")
@@ -38,5 +39,6 @@ public class SysUserController {
         Result result = sysUserService.getAllUsers(pageNum,rows,offset);
         return result;
     }
+
 
 }

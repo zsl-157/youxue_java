@@ -1,10 +1,12 @@
 package com.youxue.project.shreal.common.Shiro;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.youxue.project.shreal.common.exception.BaseException;
 import com.youxue.project.shreal.common.exception.code.BaseResponseCode;
 import com.youxue.project.shreal.common.utils.Constraints;
 import com.youxue.project.shreal.entity.User;
+import com.youxue.project.shreal.mapper.SysUserMapper;
 import com.youxue.project.shreal.service.RedisService;
 import com.youxue.project.shreal.service.SysUserService;
 import com.youxue.project.shreal.service.serviceimpl.SysUserImpl;
@@ -29,6 +31,8 @@ import java.util.Collection;
 public class CustomReam extends AuthorizingRealm {
     @Autowired
     private SysUserImpl sysUser;
+    @Autowired
+    private SysUserMapper sysUserMapper;
     @Value("${spring.redis.key.prefix.userToken}")
     private String userToken;
     @Lazy
@@ -62,7 +66,7 @@ public class CustomReam extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String userName =(String) authenticationToken.getPrincipal();
-        User user = sysUser.getOneUserByUserName(userName);
+        User user = sysUserMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUserName,userName));
         if (!ObjectUtils.isEmpty(user)){
             return new SimpleAuthenticationInfo(user.getUserName(),user.getEncryptedPassword(),ByteSource.Util.bytes(""),getName());
         }

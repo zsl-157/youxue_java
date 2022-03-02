@@ -1,6 +1,7 @@
 package com.youxue.project.shreal.controller;
 
 import com.youxue.project.shreal.service.RedisService;
+import com.youxue.project.shreal.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+
 
 @Api(tags = "redis测试")
 @RestController
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ApiTestController {
     Logger logger = LoggerFactory.getLogger(ApiTestController.class);
+    @Autowired
+    private SysUserService sysUserService;
     @Autowired
     private RedisService redisService;
     @Value("${spring.redis.key.prefix.userToken}")
@@ -35,6 +41,12 @@ public class ApiTestController {
         }
         logger.info("设置成功");
         return userToken+"设置成功!";
+    }
+
+
+    @GetMapping(value = "/v2")
+    public Map<String,Object> getAlluserTest(){
+        return sysUserService.getallTest();
     }
 
 }

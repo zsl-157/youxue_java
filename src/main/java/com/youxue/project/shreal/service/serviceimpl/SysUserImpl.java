@@ -22,11 +22,15 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import javax.activation.DataSource;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -40,6 +44,8 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
     private RoleService roleServiceImpl;
     @Autowired
     private UserAndRoleService userAndRoleService;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     @Override
     public Result<User> register(User userEntity) {
         Result<User> result = new Result<>();
@@ -84,9 +90,21 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
 
     //登录成功后请求接口获取用户信息
     @Override
-    public User getOneUserByUserName(String username){
-        User user = sysUserMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUserName,username));
-        return user;
+    public Result getOneUserByUserName(String username){
+        Result result = new Result();
+        try{
+            Map<String,Object> userInfo = jdbcTemplate.queryForMap("SELECT u.*,r.rname from user u left JOIN user_and_role ur ON u.user_id=ur.uid LEFT JOIN role r ON r.rid=ur.rid where u.user_name=?;",new Object[]{username});
+            if (!ObjectUtils.isEmpty(userInfo)){
+                result.setCmd(1,"seccess",userInfo);
+                return result;
+            }
+            else{
+                result.setCm(0,"error,用户不存在");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
 
     }
 
@@ -111,6 +129,8 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
 
     }
 
+
+
     @Override
     public Result login(User userEntity){
         Result<Object> result = new Result<>();
@@ -130,5 +150,15 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
         }
         result.setCmd(1,"登录成功",HttpUtils.getRandomToken()+"#"+userEntity.getUserId());
         return result;
+    }
+    @Override
+    public Map<String,Object> getallTest() {
+
+        Map<String,Object> userInfo = jdbcTemplate.queryForMap("SELECT u.user_name,u.user_id,r.rname " +
+                "from user u " +
+                "left JOIN user_and_role ur ON " +
+                "u.user_id=ur.uid LEFT JOIN role r ON" +
+                " r.rid=ur.rid where u.user_name='liu';");
+        return userInfo;
     }
 }
