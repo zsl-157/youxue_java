@@ -71,7 +71,10 @@ public class HttpSessionService {
 
     public String getSession(){
         try{
-            String session = request.getSession().getId();
+            String sessionId = request.getSession().getId();
+            String session = redisService.getValue(sessionId);
+            System.out.println(session);
+            return session;
         }catch (Exception e){
 
         }

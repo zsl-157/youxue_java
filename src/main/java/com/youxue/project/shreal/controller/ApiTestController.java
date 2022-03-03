@@ -1,5 +1,6 @@
 package com.youxue.project.shreal.controller;
 
+import com.youxue.project.shreal.service.HttpSessionService;
 import com.youxue.project.shreal.service.RedisService;
 import com.youxue.project.shreal.service.SysUserService;
 import io.swagger.annotations.Api;
@@ -25,6 +26,8 @@ public class ApiTestController {
     Logger logger = LoggerFactory.getLogger(ApiTestController.class);
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private HttpSessionService httpSessionService;
     @Autowired
     private RedisService redisService;
     @Value("${spring.redis.key.prefix.userToken}")
@@ -84,7 +87,10 @@ public class ApiTestController {
         logger.info("获取成功！");
         return s;
     }
-
+    @GetMapping("/g")
+    public String g(){
+        return httpSessionService.getSession();
+    }
 
     @GetMapping(value = "/v2")
     public Map<String,Object> getAlluserTest(){
