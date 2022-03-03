@@ -7,7 +7,6 @@ public class  HttpUtils {
     public static String getRandomToken() {
         Random random = new Random();
         StringBuilder randomStr = new StringBuilder();
-
         // 根据length生成相应长度的随机字符串
         for (int i = 0; i < 32; i++) {
             String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";

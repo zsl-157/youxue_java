@@ -69,6 +69,15 @@ public class HttpSessionService {
         return token;
     }
 
+    public String getSession(){
+        try{
+            String session = request.getSession().getId();
+        }catch (Exception e){
+
+        }
+        return null;
+    }
+
 
 
 }

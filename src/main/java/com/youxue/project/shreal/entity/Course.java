@@ -3,8 +3,8 @@ package com.youxue.project.shreal.entity;
 
 public class Course{
 
-  private long courseId;
-  private long userId;
+  private String courseId;
+  private String userId;
   private String couresName;
   private String courseAuthor;
   private String courseIcon;
@@ -15,20 +15,20 @@ public class Course{
   private String vipCourse;
 
 
-  public long getCourseId() {
+  public String getCourseId() {
     return courseId;
   }
 
-  public void setCourseId(long courseId) {
+  public void setCourseId(String courseId) {
     this.courseId = courseId;
   }
 
 
-  public long getUserId() {
+  public String getUserId() {
     return userId;
   }
 
-  public void setUserId(long userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 

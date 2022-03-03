@@ -1,5 +1,6 @@
 package com.youxue.project.shreal.service.serviceimpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -12,6 +13,7 @@ import com.youxue.project.shreal.entity.Role;
 import com.youxue.project.shreal.entity.User;
 import com.youxue.project.shreal.entity.UserAndRole;
 import com.youxue.project.shreal.mapper.SysUserMapper;
+import com.youxue.project.shreal.service.RedisService;
 import com.youxue.project.shreal.service.RoleService;
 import com.youxue.project.shreal.service.SysUserService;
 import com.youxue.project.shreal.service.UserAndRoleService;
@@ -29,6 +31,7 @@ import org.springframework.util.StringUtils;
 
 import javax.activation.DataSource;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -41,7 +44,9 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
     //@Resource UserAndRoleServiceImpl userAndRoleService;
     //@Resource RoleServiceImpl roleService;
     @Autowired
-    private RoleService roleServiceImpl;
+    private RoleService roleService;
+    @Autowired
+    private RedisService redisService;
     @Autowired
     private UserAndRoleService userAndRoleService;
     @Autowired
@@ -72,7 +77,7 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
         //实际不推介使用uuid，重复的可能性较大
         String roleId = UUID.randomUUID().toString();
         role.setRid(roleId);
-        roleServiceImpl.addRole(role);
+        roleService.addRole(role);
         userAndRole.setRid(roleId);
         userAndRole.setUid(uid);
         userAndRoleService.add(userAndRole);
@@ -132,13 +137,18 @@ public class SysUserImpl extends ServiceImpl<SysUserMapper,User> implements SysU
 
 
     @Override
-    public Result login(User userEntity){
+    public Result login(User userEntity,HttpServletRequest request){
         Result<Object> result = new Result<>();
         User user = sysUserMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUserName,userEntity.getUserName()));
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userEntity.getUserName(),userEntity.getPassword());
         try{
             subject.login(usernamePasswordToken);
+            request.getSession().setAttribute("l",user.getUserName());
+            String sessionId = request.getSession().getId();
+            String jsonUserObj =  JSONObject.toJSONString(user);
+            long expTime = 3 * 24 * 60 * 60;
+            redisService.setKeyExpired(sessionId,jsonUserObj,expTime);
         }catch (UnknownAccountException e){
             e.printStackTrace();
             result.setCm(0,e.getMessage());

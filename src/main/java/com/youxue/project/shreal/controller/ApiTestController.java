@@ -42,6 +42,48 @@ public class ApiTestController {
         logger.info("设置成功");
         return userToken+"设置成功!";
     }
+    @ApiOperation(value = "redis设置键")
+    @GetMapping(value = "/getval")
+    public String getRedisValue(){
+        String key = "name";
+        String value = null;
+        try{
+            value = redisService.getValue(key);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        logger.info("获取成功");
+        return "获取成功!！"+value;
+    }
+    @ApiOperation(value = "redis设置键过期时间")
+    @GetMapping(value = "/keyexp")
+    public String addKeyExpire(){
+        String key = "name1";
+        String name = "大厦";
+        Long s = null;
+        try{
+
+            redisService.setKeyExpired(key,name,100);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        logger.info("设置成功");
+        return userToken+"设置成功!";
+    }
+    @ApiOperation(value = "redis获取键过期时间")
+    @GetMapping(value = "/getkeyExp")
+    public long getKeyExp(){
+        String key = "name1";
+        Long s = null;
+        try{
+            s=redisService.getExpire(key);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        logger.info("获取成功！");
+        return s;
+    }
 
 
     @GetMapping(value = "/v2")
